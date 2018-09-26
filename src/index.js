@@ -4,7 +4,7 @@ const proto = require('apollo-engine-reporting-protobuf')
 const base64js = require('base64-js')
 const _ = require('lodash')
 const db = require('./db')
-
+const Influx = require('influx')
 const app = express()
 const port = 3000
 
@@ -14,7 +14,27 @@ function parseTS(message) {
 
 db()
   .then(db => {
-    console.log({ db })
+    app.get('/api/l', (req, res) => {
+      console.log('hiit')
+      const q = '# BOOKS_QUERY\nquery BOOKS_QUERY{books{author title}}'
+      db
+        .query(
+          `
+        select * from trace 
+        where query = ${Influx.escape.stringLit(q)}
+        order by time desc
+        limit 10
+        `,
+        )
+        .then(result => {
+          res.json(result)
+        })
+        .catch(err => {
+          console.log({ err })
+          res.status(500).send(err.stack)
+        })
+    })
+
     app.post(
       '/api/ingress/traces',
       bodyParser.raw({
