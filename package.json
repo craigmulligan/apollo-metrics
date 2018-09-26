@@ -4,9 +4,9 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon server.js",
-    "build": "next build",
-    "start": "NODE_ENV=production node server.js"
+    "dev": "nodemon index.js",
+    "build": "next build client",
+    "start": "NODE_ENV=production node index.js"
   },
   "dependencies": {
     "apollo-boost": "^0.1.16",
