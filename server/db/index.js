@@ -1,5 +1,4 @@
 const Influx = require('influx')
-
 const DB_NAME = 'reports'
 
 const influx = new Influx.InfluxDB({
