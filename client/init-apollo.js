@@ -8,13 +8,16 @@ if (!process.browser) {
   global.fetch = fetch
 }
 
+const port = process.env.PORT || 3000
+
 function create(initialState) {
   // Check out https://github.com/zeit/next.js/pull/4611 if you want to use the AWSAppSyncClient
   return new ApolloClient({
     connectToDevTools: process.browser,
     ssrMode: !process.browser, // Disables forceFetch on the server (so queries are only run once)
     link: new HttpLink({
-      uri: 'http://localhost:3000/graphql', // Server URL (must be absolute)
+      // during build we hit localhost otherwise, on the client we hit a relative /graphql endpoint
+      uri: !process.browser ? `http://127.0.0.1:${port}/graphql` : null,
       credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
     }),
     cache: new InMemoryCache().restore(initialState || {}),
