@@ -9,9 +9,8 @@ const influx = new Influx.InfluxDB({
       measurement: 'trace',
       fields: {
         duration: Influx.FieldType.INTEGER,
-        query: Influx.FieldType.STRING,
       },
-      tags: ['query'],
+      tags: ['query', 'host'],
     },
   ],
 })

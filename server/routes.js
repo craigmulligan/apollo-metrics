@@ -41,7 +41,10 @@ router.post(
             timestamp: parseTS(trace.startTime),
             fields: {
               duration: trace.durationNs,
+            },
+            tags: {
               query: key,
+              host: trace.http.requestHeaders.host.value[0],
             },
           })
         })
